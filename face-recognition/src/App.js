@@ -9,6 +9,31 @@ function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
+  const runFacemesh = async () => {
+    const net = await facemesh.load({
+      inputResolution: { width: 640, height: 480 },
+      scale: 0.8,
+    });
+  };
+
+  const detect = async (net) => {
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readState === 4
+    ) {
+      const video = webcamRef.current.video;
+      const videoWidth = webcamRef.current.video.videoWidth;
+      const videoHeight = webcamRef.current.video.videoHeight;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+
+      canvasRef.current.width = videoWidth;
+      canvasRef.current.height = videoHeight;
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
